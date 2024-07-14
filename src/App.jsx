@@ -7,10 +7,7 @@ import Error from "./pages/Error"
 import Logo from "./components/Logo"
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true)
-
-  const savedTheme = localStorage.getItem('theme');
-  const isDarkMode = savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [isLogin, setIsLogin] = useState(false)
 
   const handleLoginClick = () => {
     setIsLogin(true);
@@ -22,20 +19,37 @@ function App() {
 
 
   return (
-    <div className="bg-Mydark h-svh">
+    <div className="bg-Mywhite h-svh dark:bg-Mydark">
       
-      <Logo darkMode={isDarkMode} />
+      <Logo size={24} />
 
-      <nav className=" flex items-center justify-center gap-5 py-3">
-        {isLogin ?<Link to={"/"} onClick={handleRegisterClick}>Login</Link> :<Link to={"/register"} onClick={handleLoginClick}>Register</Link>}
+      <nav className="text-Mywhite absolute right-10 top-10 text-2xl duration-300 hover:text-Myorange hover:tracking-widest hover:font-bold">
+        {isLogin ? (
+          <Link
+            to={"/"}
+            onClick={handleRegisterClick}
+          >
+            Login
+          </Link>
+        ) : (
+          <Link
+            to={"/register"}
+            onClick={handleLoginClick}
+          >
+            Register
+          </Link>
+        )}
       </nav>
-      
 
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
+      
+      <main className="bg-red-400 w-2/3 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </main>
+      
       
 
     </div>

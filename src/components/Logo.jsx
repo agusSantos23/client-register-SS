@@ -1,14 +1,15 @@
-import PropTypes from 'prop-types'; 
-import LightLogo from '../assets/logo-SS-light.svg';
-import DarkLogo from '../assets/logo-SS-dark.svg';
+import PropTypes from 'prop-types';
 
-function Logo({ darkMode }) {
+import logo from "../assets/logo.svg"
+
+function Logo({size}) {
+
   return (
     <div className="flex items-center">
       <img
-        src={darkMode ? DarkLogo : LightLogo}
+        src={logo}
         alt="Logo"
-        className="w-40 h-40 absolute left-1/2 top-10 -translate-x-1/2"
+        className={`w-${size} absolute left-1/2 top-16 -translate-x-1/2`}
       />
       
     </div>
@@ -16,7 +17,8 @@ function Logo({ darkMode }) {
 }
 
 Logo.propTypes = {
-  darkMode: PropTypes.bool.isRequired,
+  size: PropTypes.string.isRequired,
 };
+
 
 export default Logo;
