@@ -21,9 +21,9 @@ function App() {
   return (
     <div className="bg-Mywhite h-svh dark:bg-Mydark">
       
-      <Logo size={24} />
+      <Logo size="150px" />
 
-      <nav className="text-Mywhite absolute right-10 top-10 text-2xl duration-300 hover:text-Myorange hover:tracking-widest hover:font-bold">
+      <nav className="text-Mydark dark:text-Mywhite absolute right-10 top-10 text-2xl duration-300 hover:text-Myorange hover:tracking-widest hover:font-bold dark:hover:text-Myorange">
         {isLogin ? (
           <Link
             to={"/"}
@@ -42,7 +42,7 @@ function App() {
       </nav>
 
       
-      <main className="bg-red-400 w-2/3 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
+      <main className="w-2/3 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />

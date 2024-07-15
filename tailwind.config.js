@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
+        Mylightorange: '#FF9269',
         Myorange: '#E16428', 
-        Mydark: '#2d3748',
+        Mydark: '#2C2C2C',
         Mywhite: '#f8f8ff',
         
       },
