@@ -3,6 +3,7 @@ import { useState } from "react"
 
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import Home from "./pages/Home"
 import Error from "./pages/Error"
 import Logo from "./components/Logo"
 
@@ -46,6 +47,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/home" element={<Home />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </main>

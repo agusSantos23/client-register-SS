@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 
 import Enviar from "../components/common/Enviar"
 import Input from "../components/common/Input"
+import { loginRequest } from "../api/auth";
 
 
 
@@ -11,8 +12,12 @@ function Login(){
     formState:{errors}
   } = useForm();
 
-  const onSubmit = handleSubmit(data => {
+  const onSubmit = handleSubmit(async data => {
     console.log("Datos del formulario:", data);
+
+    const res = await loginRequest(data)
+
+    console.log(res);
   }) 
 
   return(

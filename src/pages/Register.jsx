@@ -1,4 +1,7 @@
 import { useForm } from "react-hook-form";
+
+import { registerRequest } from "../api/auth";
+
 import Enviar from "../components/common/Enviar";
 import Input from "../components/common/Input";
 
@@ -7,8 +10,12 @@ function Register() {
     formState:{errors}
   } = useForm();
 
-  const onSubmit = handleSubmit(data => {
+  const onSubmit = handleSubmit( async data => {
     console.log("Datos del formulario:", data);
+
+    const res = await registerRequest(data)
+
+    console.log(res);
   }) 
   
   return (

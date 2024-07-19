@@ -43,6 +43,10 @@ function Input({
               minLength: {
                 value: minLength,
                 message: `Debe tener al menos ${minLength} caracteres.`
+              },
+              pattern: {
+                value: /(?=.*[a-z])(?=.*[A-Z])/,
+                message: 'Debe tener una letra mayúscula y minúscula.'
               }
             })}
             {...props}
