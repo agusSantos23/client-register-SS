@@ -1,10 +1,8 @@
-
 import { useForm } from "react-hook-form";
-
+import { useAuth } from "../context/useAuth"
 import Enviar from "../components/common/Enviar"
 import Input from "../components/common/Input"
 import { loginRequest } from "../api/auth";
-
 
 
 function Login(){
@@ -12,12 +10,21 @@ function Login(){
     formState:{errors}
   } = useForm();
 
+  const { signup } = useAuth()
+
   const onSubmit = handleSubmit(async data => {
-    console.log("Datos del formulario:", data);
 
-    const res = await loginRequest(data)
+    try {
+      const res = await loginRequest(data)
 
-    console.log(res);
+      console.log(res.status);
+
+      
+
+    } catch (error) {
+      console.log(error);
+    }
+    
   }) 
 
   return(

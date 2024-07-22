@@ -1,5 +1,6 @@
 import {Route, Routes, Link} from "react-router-dom"
 import { useState } from "react"
+import { AuthProvider } from "./context/AuthContext"
 
 import Login from "./pages/Login"
 import Register from "./pages/Register"
@@ -18,43 +19,44 @@ function App() {
     setIsLogin(false);
   };
 
-
   return (
-    <div className="bg-Mywhite h-svh dark:bg-Mydark">
-      
-      <Logo size="150px" />
+    <AuthProvider>
+      <div className="bg-Mywhite h-svh dark:bg-Mydark">
+        
+        <Logo size="150px" />
 
-      <nav className="text-Mydark dark:text-Mywhite absolute right-10 top-10 text-2xl duration-300 hover:text-Myorange hover:tracking-widest hover:font-bold dark:hover:text-Myorange">
-        {isLogin ? (
-          <Link
-            to={"/"}
-            onClick={handleRegisterClick}
-          >
-            Login
-          </Link>
-        ) : (
-          <Link
-            to={"/register"}
-            onClick={handleLoginClick}
-          >
-            Register
-          </Link>
-        )}
-      </nav>
+        <nav className="text-Mydark dark:text-Mywhite absolute right-10 top-10 text-2xl duration-300 hover:text-Myorange hover:tracking-widest hover:font-bold dark:hover:text-Myorange">
+          {isLogin ? (
+            <Link
+              to={"/"}
+              onClick={handleRegisterClick}
+            >
+              Login
+            </Link>
+          ) : (
+            <Link
+              to={"/register"}
+              onClick={handleLoginClick}
+            >
+              Register
+            </Link>
+          )}
+        </nav>
 
-      
-      <main className="w-2/3 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-      </main>
-      
-      
+        
+        <main className="w-2/3 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="*" element={<Error />} />
+          </Routes>
+        </main>
+        
+        
 
-    </div>
+      </div>
+    </AuthProvider>
   )
 }
 
