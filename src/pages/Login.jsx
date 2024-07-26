@@ -1,59 +1,106 @@
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer  } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
+import { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
+
 import { useAuth } from "../context/useAuth"
+
 import Enviar from "../components/common/Enviar"
 import Input from "../components/common/Input"
-import { loginRequest } from "../api/auth";
 
 
-function Login(){
+
+function Login({handleRouteClick}){
   const { register, handleSubmit, 
     formState:{errors}
   } = useForm();
 
-  const { signup } = useAuth()
+  const { 
+    signin,
+    isAuthenticated,
+    errors: signinErrors
+  } = useAuth()
+
+  const navigate = useNavigate()
 
   const onSubmit = handleSubmit(async data => {
 
-    try {
-      const res = await loginRequest(data)
-
-      console.log(res.status);
-
-      
-
-    } catch (error) {
-      console.log(error);
-    }
-    
+    signin(data)
   }) 
 
-  return(
-    <form 
-      onSubmit={onSubmit}
-      className="flex flex-col justify-center gap-20 items-center h-full"
-    >
-      <div className="flex flex-col gap-10">
-        <Input 
-          type="email" 
-          id="email" 
-          placeholder="Correo Electronico"
-          register={register}
-          required={true}
-          errors={errors}
-        />
-        <Input 
-          type="password" 
-          id="password" 
-          placeholder="Contraseña"
-          register={register}
-          required={true}
-          errors={errors}
-        />
-      </div>
+  const [ifError, setIfError] = useState(false)
 
-      <Enviar content="Iniciar Sesion" />
-		</form>
+  useEffect(()=>{
+    if (isAuthenticated) {
+      toast.success("Inicio de sesión exitoso, redireccionando",{
+        position: "bottom-center",
+        theme: "colored"
+      })
+
+      setTimeout(()=>{
+        navigate('/home')
+      },3000)
+    }
+  }, [isAuthenticated,navigate])
+
+  useEffect(()=>{
+    signinErrors.forEach(err => toast.error(err ,{
+      position: "bottom-center",
+      theme: "colored",
+    }))
+    if (signinErrors.length > 0) setIfError(true)
+  },[signinErrors])
+
+  return(
+    <>
+      <form 
+        onSubmit={onSubmit}
+        className="flex flex-col justify-center gap-16 items-center h-full"
+      >
+        <div className="flex flex-col gap-10">
+          <Input 
+            type="email" 
+            id="email" 
+            placeholder="Correo Electronico"
+            register={register}
+            required={true}
+            errors={errors}
+          />
+          <Input 
+            type="password" 
+            id="password" 
+            placeholder="Contraseña"
+            register={register}
+            required={true}
+            errors={errors}
+          />
+          { 
+            ifError && 
+              <p className="text-Mywhite ">
+                Si no tienes una cuenta creada, puedes crearla {' '}
+                <Link 
+                  to="/register" 
+                  onClick={handleRouteClick} 
+                  className="text-Myorange hover:text-Mylightorange duration-500"
+                >
+                  AQUI
+                </Link>      
+              </p>
+          }
+        </div>
+
+        <Enviar content="Iniciar Sesion" />
+
+      </form>
+      <ToastContainer/>
+    </>
   )
+}
+
+Login.propTypes = {
+  handleRouteClick: PropTypes.func
 }
 
 export default Login

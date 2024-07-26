@@ -11,12 +11,10 @@ import Logo from "./components/Logo"
 function App() {
   const [isLogin, setIsLogin] = useState(false)
 
-  const handleLoginClick = () => {
-    setIsLogin(true);
-  };
+  
 
-  const handleRegisterClick = () => {
-    setIsLogin(false);
+  const handleRouteClick = () => {
+    setIsLogin(!isLogin);
   };
 
   return (
@@ -29,14 +27,14 @@ function App() {
           {isLogin ? (
             <Link
               to={"/"}
-              onClick={handleRegisterClick}
+              onClick={handleRouteClick}
             >
               Login
             </Link>
           ) : (
             <Link
               to={"/register"}
-              onClick={handleLoginClick}
+              onClick={handleRouteClick}
             >
               Register
             </Link>
@@ -46,8 +44,8 @@ function App() {
         
         <main className="w-2/3 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Login handleRouteClick={handleRouteClick} />} />
+            <Route path="/register" element={<Register handleRouteClick={handleRouteClick}/>} />
             <Route path="/home" element={<Home />} />
             <Route path="*" element={<Error />} />
           </Routes>

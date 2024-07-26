@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { registerRequest } from "../api/auth"
+import { registerRequest, loginRequest } from "../api/auth"
 import PropTypes from "prop-types";
 
 export const AuthContext = createContext()
@@ -14,21 +14,36 @@ export const AuthProvider = ({children}) => {
 
     try{
       const res = await registerRequest(user)
-      console.log(res)
 
       setUser(res.data)
       setIsAuthenticated(true)
       setErrors([])
     }catch(error){
-      setErrors(error.response.data.message || ["An unexpected error occurred"])
+      setErrors( error?.response?.data?.message || error?.response?.data?.error || ["An unexpected error occurred"])
     }
   }
+
+  const signin = async user =>{
+
+    try {
+      const res = await loginRequest(user)
+
+      setUser(res.data)
+      setIsAuthenticated(true)
+      setErrors([])
+    } catch (error) {
+
+      setErrors( error?.response?.data?.message || error?.response?.data?.error || ["An unexpected error occurred"])
+    }
+  }
+  
 
   return(
     
     <AuthContext.Provider 
     value={{
       signup,
+      signin,
       user,
       isAuthenticated,
       errors,
