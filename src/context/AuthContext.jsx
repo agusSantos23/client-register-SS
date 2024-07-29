@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
-import { registerRequest, loginRequest } from "../api/auth"
+import { createContext, useEffect, useState } from "react";
+import { registerRequest, loginRequest, verityTokenRequest } from "../api/auth"
 import PropTypes from "prop-types";
+import Cookies from "js-cookie";
 
 export const AuthContext = createContext()
 
@@ -36,18 +37,49 @@ export const AuthProvider = ({children}) => {
       setErrors( error?.response?.data?.message || error?.response?.data?.error || ["An unexpected error occurred"])
     }
   }
+
+  useEffect(() => {
+
+    const cookies = Cookies.get()
+
+    async function checkLogin(){
+
+      if(cookies.token){
+        try {
+          const res = await verityTokenRequest(cookies.token)
+          
+          console.log(res);
+          
+          if(!res.data) return setIsAuthenticated(false)
+  
+          setIsAuthenticated(true)
+          setUser(res.data)
+
+        } catch (error) {
+        
+          setIsAuthenticated(false)
+          setUser(null)
+        }
+      }
+    }
+    checkLogin()
+
+    
+
+  }, [])
   
 
   return(
     
     <AuthContext.Provider 
-    value={{
-      signup,
-      signin,
-      user,
-      isAuthenticated,
-      errors,
-    }}>
+      value={{
+        signup,
+        signin,
+        user,
+        isAuthenticated,
+        errors,
+      }}
+    >
 
       {children}
     </AuthContext.Provider>

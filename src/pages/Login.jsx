@@ -10,8 +10,6 @@ import { useAuth } from "../context/useAuth"
 import Enviar from "../components/common/Enviar"
 import Input from "../components/common/Input"
 
-
-
 function Login({handleRouteClick}){
   const { register, handleSubmit, 
     formState:{errors}
