@@ -61,6 +61,7 @@ function Input({
         {errors[id] && <span className='ml-2 text-Myorange tracking-wide'>{errors[id].message}</span>}
       </div>
     )
+    
   } else {
     styles += " pr-2 focus:text-Myorange";
 

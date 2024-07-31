@@ -10,6 +10,7 @@ export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   const signup = async user =>{
 
@@ -38,52 +39,60 @@ export const AuthProvider = ({children}) => {
     }
   }
 
+  const updateProfile = async user =>{
+    console.log(user);
+  }
+
   useEffect(() => {
 
     const cookies = Cookies.get()
 
     async function checkLogin(){
 
-      if(cookies.token){
-        try {
-          const res = await verityTokenRequest(cookies.token)
-          
-          console.log(res);
-          
-          if(!res.data) return setIsAuthenticated(false)
-  
-          setIsAuthenticated(true)
-          setUser(res.data)
-
-        } catch (error) {
+      if (!cookies.token) {
         
-          setIsAuthenticated(false)
-          setUser(null)
-        }
+        setLoading(false)
+        setIsAuthenticated(false)
+        setUser(false)
+        
       }
+      
+      try {
+        const res = await verityTokenRequest(cookies.token)     
+        if(!res.data) {
+          setLoading(false)
+          setIsAuthenticated(false)
+        } 
+        
+        setLoading(false)
+        setIsAuthenticated(true)
+        setUser(res.data)
+
+      } catch (error) {
+        setLoading(false)
+        setIsAuthenticated(false)
+        setUser(null)
+      }
+      
     }
     checkLogin()
 
-    
-
   }, [])
-  
 
   return(
-    
     <AuthContext.Provider 
       value={{
         signup,
         signin,
+        updateProfile,
+        loading,
         user,
         isAuthenticated,
         errors,
       }}
     >
-
       {children}
     </AuthContext.Provider>
-  
   )
 }
 

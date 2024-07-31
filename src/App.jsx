@@ -42,7 +42,7 @@ function App() {
         </nav>
 
         
-        <main className="w-2/3 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
+        <main className="w-5/6 h-2/3 absolute left-1/2 bottom-10 -translate-x-1/2 ">
           <Routes>
             <Route path="/" element={<Login handleRouteClick={handleRouteClick} />} />
             <Route path="/register" element={<Register handleRouteClick={handleRouteClick}/>} />

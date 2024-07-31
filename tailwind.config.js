@@ -13,6 +13,18 @@ export default {
         Mywhite: '#f8f8ff',
         
       },
+
+      keyframes: {
+        fadeOut: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
+        },
+      },
+      animation: {
+        fadeOut: 'fadeOut 2s ease-in-out infinite',
+        fadeOutDelay1: 'fadeOut 2s ease-in-out infinite .5s',
+        fadeOutDelay2: 'fadeOut 2s ease-in-out infinite 1s',
+      },
     },
   },
   plugins: [],

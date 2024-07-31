@@ -49,13 +49,8 @@ function Register({handleRouteClick}) {
 
   },[registerErrors])
 
-  const onSubmit = handleSubmit(async data => {
-    
-    signup(data)
-  })
+  const onSubmit = handleSubmit(async data => signup(data))
 
-
-  
   return (
     <>
       <form
