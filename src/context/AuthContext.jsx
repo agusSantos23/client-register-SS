@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest, verityTokenRequest } from "../api/auth"
+import { pictureRequest } from "../api/profile";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 
@@ -10,7 +11,9 @@ export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [change, setChange] = useState({})
   const [loading, setLoading] = useState(true)
+  const [isCooldown, setIsCooldown] = useState(false)
 
   const signup = async user =>{
 
@@ -41,6 +44,45 @@ export const AuthProvider = ({children}) => {
 
   const updateProfile = async user =>{
     console.log(user);
+  }
+
+  const updatePicture = async pictureNumber =>{
+
+    if (isCooldown) return
+
+    setIsCooldown(true)
+    try {
+      
+      const res = await pictureRequest(
+        {
+          email: user.email,
+          pictureNumber: pictureNumber
+        }
+      )
+
+      if (res.status === 200) {
+        setChange(res.data.message)
+
+        let boxUser = user
+        boxUser.picture = +pictureNumber
+        setUser(boxUser);
+
+
+        setTimeout(() => {
+          setChange({})
+        }, 100);
+      }
+      
+
+
+    } catch (error) {
+      console.log(error);
+      throw new Error("Error set new picture")
+    }finally {
+      setTimeout(() => {
+        setIsCooldown(false)
+      }, 5500);
+    }
   }
 
   useEffect(() => {
@@ -85,9 +127,11 @@ export const AuthProvider = ({children}) => {
         signup,
         signin,
         updateProfile,
+        updatePicture,
         loading,
         user,
         isAuthenticated,
+        change,
         errors,
       }}
     >

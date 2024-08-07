@@ -23,10 +23,7 @@ function Login({handleRouteClick}){
 
   const navigate = useNavigate()
 
-  const onSubmit = handleSubmit(async data => {
-
-    signin(data)
-  }) 
+  const onSubmit = handleSubmit(async data => signin(data)) 
 
   const [ifError, setIfError] = useState(false)
 
@@ -76,7 +73,7 @@ function Login({handleRouteClick}){
           />
           { 
             ifError && 
-              <p className="text-Mywhite ">
+              <p className="text-Mydark dark:text-Mywhite ">
                 Si no tienes una cuenta creada, puedes crearla {' '}
                 <Link 
                   to="/register" 
