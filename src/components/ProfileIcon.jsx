@@ -24,7 +24,7 @@ function ProfileIcon({ onSubmit, userNumber, select = false}){
       imgProfile = profileViolet
       break;
 
-    case "4":
+    case "0":
       imgProfile = profileBlue
       break;
   
@@ -36,7 +36,7 @@ function ProfileIcon({ onSubmit, userNumber, select = false}){
     return <img className='w-40' src={imgProfile} alt="imgProfile" />
     
   }else{
-    return <img className="w-16 cursor-pointer" onClick={() => {onSubmit(userNumber)}} src={imgProfile} alt="imgProfile" />
+    return <img className="w-16 cursor-pointer hover:filter hover:drop-shadow-diffuse duration-200 ease-in " onClick={() => {onSubmit(userNumber)}} src={imgProfile} alt="imgProfile" />
     
   }
 

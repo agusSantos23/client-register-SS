@@ -10,7 +10,7 @@ function SectionPicture({ userPicture }){
     updatePicture
   } = useAuth()
 
-  const possibleNumbers = ['1', '2', '3', '4'].filter(number => number !== userPicture);
+  const possibleNumbers = ['1', '2', '3', '0'].filter(number => number !== userPicture);
   
   const onSubmit = async data => updatePicture(data) 
 
@@ -18,7 +18,7 @@ function SectionPicture({ userPicture }){
   return (
     <div className="flex justify-center items-center">
 
-        <div className="flex justify-center items-center flex-col gap-4">
+        <div className="flex justify-center items-center flex-col gap-8">
           <ProfileIcon userNumber={userPicture} select={true} />
 
 

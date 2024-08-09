@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { registerRequest, loginRequest, verityTokenRequest } from "../api/auth"
-import { pictureRequest } from "../api/profile";
+import { pictureRequest, profileRequest } from "../api/profile";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 
@@ -42,8 +42,36 @@ export const AuthProvider = ({children}) => {
     }
   }
 
-  const updateProfile = async user =>{
-    console.log(user);
+  const updateProfile = async data =>{
+
+    try {
+      
+      if (Object.values(data).some(value => value !== '')) {
+
+        let dataUser = {}
+  
+        for(let key in data){
+          if(data[key] !== "") dataUser[key] = data[key]
+        }
+  
+        const res = await profileRequest(
+          {
+            emailUser: user.email,
+            dataUser: dataUser
+          }
+        )
+  
+        console.log(res);
+        
+      }else{
+        console.log("No has enviado ningun valor nuevo");
+        
+      }
+
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   const updatePicture = async pictureNumber =>{
@@ -85,6 +113,12 @@ export const AuthProvider = ({children}) => {
     }
   }
 
+  const logout = () =>{
+    Cookies.remove("token")
+    setIsAuthenticated(false)
+    setUser(null)
+  }
+
   useEffect(() => {
 
     const cookies = Cookies.get()
@@ -95,11 +129,11 @@ export const AuthProvider = ({children}) => {
         
         setLoading(false)
         setIsAuthenticated(false)
-        setUser(false)
-        
+        setUser(null)
       }
       
       try {
+
         const res = await verityTokenRequest(cookies.token)     
         if(!res.data) {
           setLoading(false)
@@ -111,6 +145,7 @@ export const AuthProvider = ({children}) => {
         setUser(res.data)
 
       } catch (error) {
+        
         setLoading(false)
         setIsAuthenticated(false)
         setUser(null)
@@ -126,6 +161,7 @@ export const AuthProvider = ({children}) => {
       value={{
         signup,
         signin,
+        logout,
         updateProfile,
         updatePicture,
         loading,

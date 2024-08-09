@@ -5,8 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { useAuth } from "../context/useAuth"
 
-import Enviar from "../components/common/Enviar"
-import Input from "../components/common/Input"
+import SectionData from "../components/SectionData"
 import SectionPicture from "../components/SectionPicture"
 import { useEffect } from "react"
 
@@ -14,13 +13,12 @@ import { useEffect } from "react"
 
 function Home(){
 
-  
-
   const { register, handleSubmit, 
     formState:{errors}
   } = useForm()
 
-  // const {pictureUser, setPictureUser} = useState(null)
+  
+  
 
   const { 
     isAuthenticated, 
@@ -29,7 +27,6 @@ function Home(){
     user,
     change,
   } = useAuth()
-
   
   const appVisited = user && Object.entries(user.app_visted);
 
@@ -39,7 +36,7 @@ function Home(){
   useEffect(() => {
     if (change) {
       toast.success(change,{
-        position: "bottom-center",
+        position: "bottom-right",
         theme: "colored"
       })
     }
@@ -73,7 +70,7 @@ function Home(){
 
 
   return(
-    <div className="grid grid-cols-3 border-4 border-Myorange h-full rounded-lg">
+    <div className="grid grid-cols-3 grid-rows-1 border-4 border-Myorange h-full rounded-lg">
       
       <div className="flex justify-center items-center">
         
@@ -100,42 +97,7 @@ function Home(){
         </div>
       </div>
 
-      <div className="flex flex-col justify-around">
-        <header className="flex justify-center gap-3 flex-col items-center text-center dark:text-Mywhite">
-          <h1 className="text-4xl">Hola {user.username}</h1>
-          <h2 className="text-2xl">Control de Usuario</h2>
-        </header>
-
-        <form 
-          onSubmit={onSubmit}
-          className="flex flex-col justify-around  items-center h-4/6"
-        >
-          <Input
-            type="email"
-            id="email"
-            placeholder="Correo Electrónico" 
-            register={register}
-            errors={errors}
-          />
-          <Input 
-            type="text" 
-            id="username" 
-            placeholder="Nombre de usuario"
-            register={register}
-            errors={errors}
-          />
-          <Input 
-            type="password" 
-            id="password" 
-            placeholder="Contraseña"
-            register={register}
-            errors={errors}
-            minLength={8}
-          />
-
-          <Enviar content="Actualizar" />
-        </form>
-      </div>
+      <SectionData onSubmit={onSubmit} user={user} register={register} errors={errors}/>
 
       <SectionPicture userPicture={user.picture.toString()} />
     

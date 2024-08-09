@@ -1,6 +1,7 @@
 import {Route, Routes, Link} from "react-router-dom"
 import { useState } from "react"
-import { AuthProvider } from "./context/AuthContext"
+import { useAuth } from "./context/useAuth"
+
 
 import Login from "./pages/Login"
 import Register from "./pages/Register"
@@ -11,34 +12,33 @@ import Logo from "./components/Logo"
 function App() {
   const [isLogin, setIsLogin] = useState(false)
 
+  const { isAuthenticated, logout } = useAuth()
+
+  const handleRouteClick = () => setIsLogin(!isLogin)
   
 
-  const handleRouteClick = () => {
-    setIsLogin(!isLogin);
-  };
-
   return (
-    <AuthProvider>
       <div className="bg-Mywhite h-svh dark:bg-Mydark">
         
         <Logo size="150px" />
 
-        <nav className="text-Mydark dark:text-Mywhite absolute right-10 top-10 text-2xl duration-300 hover:text-Myorange hover:tracking-widest hover:font-bold dark:hover:text-Myorange">
-          {isLogin ? (
-            <Link
-              to={"/"}
-              onClick={handleRouteClick}
-            >
+        <nav className="text-Mydark dark:text-Mywhite absolute right-10 top-10 text-2xl duration-300 hover:text-Myorange hover:tracking-widest hover:font-bold dark:hover:text-Myorange">   
+        {
+          isAuthenticated ? (
+            <Link to={"/"} onClick={() => logout()}>
+              Cerrar Sesion
+            </Link>
+          ) : isLogin ? (
+            <Link to={"/"} onClick={handleRouteClick}>
               Login
             </Link>
           ) : (
-            <Link
-              to={"/register"}
-              onClick={handleRouteClick}
-            >
+            <Link to={"/register"} onClick={handleRouteClick}>
               Register
             </Link>
-          )}
+          )
+        }
+
         </nav>
 
         
@@ -54,7 +54,6 @@ function App() {
         
 
       </div>
-    </AuthProvider>
   )
 }
 

@@ -13,6 +13,9 @@ export default {
         Mywhite: '#f8f8ff',
         
       },
+      dropShadow: {
+        'diffuse': '0px 4px 10px rgba(255, 255, 255, 0.1)',
+      },
 
       keyframes: {
         fadeOut: {
