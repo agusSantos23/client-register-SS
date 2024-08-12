@@ -1,5 +1,5 @@
-import {Route, Routes, Link} from "react-router-dom"
-import { useState } from "react"
+import {Route, Routes, Link, useLocation} from "react-router-dom"
+import { useEffect, useState } from "react"
 import { useAuth } from "./context/useAuth"
 
 
@@ -12,9 +12,19 @@ import Logo from "./components/Logo"
 function App() {
   const [isLogin, setIsLogin] = useState(false)
 
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout, setErrors } = useAuth()
+  const location = useLocation()
 
-  const handleRouteClick = () => setIsLogin(!isLogin)
+  const handleRouteClick = () => {
+    setErrors([])
+    setIsLogin(!isLogin)
+  }
+
+  useEffect(() => {
+
+    setIsLogin(location.pathname === "/register")
+    
+  }, [location]);
   
 
   return (

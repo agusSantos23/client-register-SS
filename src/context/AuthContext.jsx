@@ -11,7 +11,7 @@ export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [change, setChange] = useState({})
+  const [change, setChange] = useState([])
   const [loading, setLoading] = useState(true)
   const [isCooldown, setIsCooldown] = useState(false)
 
@@ -53,7 +53,7 @@ export const AuthProvider = ({children}) => {
         for(let key in data){
           if(data[key] !== "") dataUser[key] = data[key]
         }
-  
+        
         const res = await profileRequest(
           {
             emailUser: user.email,
@@ -61,16 +61,50 @@ export const AuthProvider = ({children}) => {
           }
         )
   
-        console.log(res);
         
+        if (res.status === 200) {
+          let madeChange = []
+          console.log(res.data);
+          
+          if (res.data.resultEmail === true) {
+            let boxUser = { ...user }
+            boxUser.email = data.email
+            setUser(boxUser)
+            madeChange.push("Correo electrónico");
+
+          }
+          
+          if (res.data.resultUsername === true) {
+            let boxUser = { ...user }
+            boxUser.username = data.username
+            setUser(boxUser)
+            madeChange.push("Usuario");
+
+          }
+
+          if (res.data.resultPassword === true) {
+            madeChange.push("Contraseña");
+          }
+
+          setChange(madeChange)
+          
+
+          setTimeout(() => {
+            setChange([])
+          }, 100);
+        }
       }else{
-        console.log("No has enviado ningun valor nuevo");
-        
+        setErrors(["No has enviado ningun valor nuevo"])        
       }
 
     } catch (error) {
-      console.log(error);
-      
+      if ( error.response && error.response.status === 409) {
+        setErrors(["Ese correo ya esta en uso"])
+        
+      }else{
+        setErrors(["Ha ocurrido un error al actulizar los datos de Usuario"])
+
+      }
     }
   }
 
@@ -97,15 +131,15 @@ export const AuthProvider = ({children}) => {
 
 
         setTimeout(() => {
-          setChange({})
+          setChange([])
         }, 100);
       }
       
 
 
     } catch (error) {
-      console.log(error);
       throw new Error("Error set new picture")
+
     }finally {
       setTimeout(() => {
         setIsCooldown(false)
@@ -114,9 +148,11 @@ export const AuthProvider = ({children}) => {
   }
 
   const logout = () =>{
+    setErrors([])
     Cookies.remove("token")
     setIsAuthenticated(false)
     setUser(null)
+    
   }
 
   useEffect(() => {
@@ -169,6 +205,7 @@ export const AuthProvider = ({children}) => {
         isAuthenticated,
         change,
         errors,
+        setErrors,
       }}
     >
       {children}

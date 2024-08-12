@@ -26,6 +26,7 @@ function Home(){
     updateProfile, 
     user,
     change,
+    errors: errorUser,
   } = useAuth()
   
   const appVisited = user && Object.entries(user.app_visted);
@@ -34,15 +35,40 @@ function Home(){
   const onSubmit = handleSubmit(async data => updateProfile(data))
 
   useEffect(() => {
+
     if (change) {
-      toast.success(change,{
-        position: "bottom-right",
-        theme: "colored"
-      })
+      if (typeof change !== 'string' && change.length > 0) {
+        
+        const message = `Se han actualizado los siguientes valores: ${change.join(', ')}`
+        
+        toast.success(message,{
+          position: "bottom-right",
+          theme: "colored"
+        })
+  
+      }else{
+        toast.success(change,{
+          position: "bottom-right",
+          theme: "colored"
+        })
+      }
     }
+
 
   }, [change])
 
+
+  useEffect(() =>{
+    if (errorUser.length) {
+      toast.error(errorUser[0],{
+        position: "bottom-right",
+        theme: "colored"
+      })
+      
+    }
+  
+
+  },[errorUser])
 
 
   if(loading) return(
